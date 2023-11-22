@@ -8,7 +8,10 @@ import org.example.annotaions.ComponentScan;
  * @description
  */
 
-@ComponentScan("org.example")
+@ComponentScan("org.example.service")
 public class AppConfig {
+
+
+
 
 }

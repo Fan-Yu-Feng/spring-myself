@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @description 扫描包路径
  */
 
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ComponentScan {
 	String value() default "";
