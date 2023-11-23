@@ -1,10 +1,13 @@
 package org.example.application;
 
-import org.example.annotaions.ComponentScan;
+import org.example.annotaions.*;
 
+import java.beans.Introspector;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,6 +18,7 @@ public class MyApplicationContext {
 
 
     private Class<? extends org.example.config.AppConfig> configClass;
+	private final Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
 
 
     public MyApplicationContext(Class<org.example.config.AppConfig> configClass) {
@@ -61,11 +65,31 @@ public class MyApplicationContext {
 			for(File cFile :fileArrayList){
 				String absolutePath = cFile.getAbsolutePath();
 				System.out.println("absolutePath = " + absolutePath);
-				String className = absolutePath.substring(absolutePath.indexOf("classes"), absolutePath.indexOf(".class")).replace("/",".");
+				String className = absolutePath.substring(absolutePath.indexOf("org"), absolutePath.indexOf(".class")).replace("/",".");
 				System.out.println("className = " + className);
 				try {
-					Class<?> aClass = classLoader.loadClass(className);
-					System.out.println("aClass = " + aClass);
+					Class<?> clazz = classLoader.loadClass(className);
+					if(!clazz.isAnnotationPresent(Component.class)){
+						continue;
+					}
+					// 设置 BeanDefinition
+					BeanDefinition beanDefinition = new BeanDefinition();
+					beanDefinition.setType(clazz);
+					beanDefinition.setLazy(clazz.isAnnotationPresent(Lazy.class));
+					if(clazz.isAnnotationPresent(Scope.class)){
+						beanDefinition.setScope(clazz.getAnnotation(Scope.class).value());
+					}else {
+						beanDefinition.setScope("singletion");
+					}
+					String beanName = clazz.getAnnotation(Component.class).value();
+					if(beanName.isEmpty()){
+						beanName = Introspector.decapitalize(clazz.getSimpleName());
+						System.out.println("beanName = " + beanName);
+					}
+					
+					System.out.println("aClass = " + clazz);
+					beanDefinitionMap.put(beanName, beanDefinition);
+					
 					
 					
 				} catch (ClassNotFoundException e) {
