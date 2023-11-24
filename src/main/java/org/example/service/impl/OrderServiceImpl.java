@@ -9,7 +9,7 @@ import org.example.service.OrderService;
  * @description
  */
 
-@Component
+@Component("orderService")
 public class OrderServiceImpl implements OrderService {
 	@Override
 	public String getOrderInfo() {
