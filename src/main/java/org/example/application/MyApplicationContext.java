@@ -1,6 +1,9 @@
 package org.example.application;
 
 import org.example.annotaions.*;
+import org.example.core.ApplicationContextAware;
+import org.example.core.BeanDefinition;
+import org.example.core.BeanNameAware;
 
 import java.beans.Introspector;
 import java.io.File;
@@ -68,6 +71,15 @@ public class MyApplicationContext {
 					// 将指定的值设置给字段
 					field.set(object, bean);
 				}
+			}
+			
+			
+			if (object instanceof BeanNameAware) {
+				((BeanNameAware)object).setBeanName(beanName);
+			}
+			
+			if (object instanceof ApplicationContextAware) {
+				((ApplicationContextAware)object).setApplicationContext(this);
 			}
 			return object;
 		} catch (InstantiationException e) {

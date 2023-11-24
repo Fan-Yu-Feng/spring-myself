@@ -1,4 +1,4 @@
-package org.example.annotaions;
+package org.example.core;
 
 public class BeanDefinition {
 	private Class type;

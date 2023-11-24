@@ -17,6 +17,7 @@ public class MainAppliation {
 		UserService userService = (UserService)myApplicationContext.getBean("userService");
 		System.out.println("userService = " + userService);
 		String userInfo = userService.getUserInfo();
+		userService.test();
 		System.out.println("userInfo = " + userInfo);
 		System.out.println("Hello world!");
 	}

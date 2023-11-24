@@ -16,4 +16,10 @@ public interface UserService {
 	String getUserInfo();
 	
 	
+	/**
+	 * 测试容器类
+	 */
+	void test();
+	
+	
 }
